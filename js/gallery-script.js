@@ -11,8 +11,6 @@ const markup = images.map((image) => {
 });
 
 const list = document.querySelector(".js-gallery");
-list.append(...markup);
-
 const backdrop = document.querySelector(".js-lightbox");
 const closeModal = document.querySelector(
   'button[data-action="close-lightbox"]'
@@ -20,7 +18,15 @@ const closeModal = document.querySelector(
 const overlay = document.querySelector(".lightbox__overlay");
 const forChangeImg = document.querySelector(".lightbox__image");
 
+list.append(...markup);
+
 list.addEventListener("click", getUrlImage);
+closeModal.addEventListener("click", cleaningBackdrop);
+overlay.addEventListener("click", (event) => {
+  if (event.target === event.currentTarget) {
+    cleaningBackdrop();
+  }
+});
 
 function getUrlImage(event) {
   event.preventDefault();
@@ -32,14 +38,7 @@ function getUrlImage(event) {
   forChangeImg.src = urlImage;
   backdrop.classList.add("is-open");
 }
-
-closeModal.addEventListener("click", () => {
+function cleaningBackdrop(event) {
   backdrop.classList.remove("is-open");
   forChangeImg.src = "";
-});
-overlay.addEventListener("click", (event) => {
-  if (event.target === event.currentTarget) {
-    backdrop.classList.remove("is-open");
-  }
-  forChangeImg.src = "";
-});
+}
