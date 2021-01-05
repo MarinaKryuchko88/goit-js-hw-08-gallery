@@ -1,5 +1,15 @@
 import images from "./gallery-items.js";
 
+const list = document.querySelector(".js-gallery");
+const backdrop = document.querySelector(".js-lightbox");
+const closeModal = document.querySelector(
+  'button[data-action="close-lightbox"]'
+);
+const overlay = document.querySelector(".lightbox__overlay");
+const forChangeImg = document.querySelector(".lightbox__image");
+let target;
+let urlImage;
+
 const markup = images.map((image) => {
   let listItem = document.createElement("li");
   listItem.classList.add("gallery__item");
@@ -9,14 +19,6 @@ const markup = images.map((image) => {
   );
   return listItem;
 });
-
-const list = document.querySelector(".js-gallery");
-const backdrop = document.querySelector(".js-lightbox");
-const closeModal = document.querySelector(
-  'button[data-action="close-lightbox"]'
-);
-const overlay = document.querySelector(".lightbox__overlay");
-const forChangeImg = document.querySelector(".lightbox__image");
 
 list.append(...markup);
 
@@ -30,12 +32,15 @@ overlay.addEventListener("click", (event) => {
 
 function getUrlImage(event) {
   event.preventDefault();
-  const target = event.target;
+  target = event.target;
   if (target.nodeName !== "IMG") {
     return;
   }
-  const urlImage = target.dataset.source;
+  urlImage = target.dataset.source;
   forChangeImg.src = urlImage;
+  openBackdrop();
+}
+function openBackdrop(event) {
   backdrop.classList.add("is-open");
 }
 function cleaningBackdrop(event) {
